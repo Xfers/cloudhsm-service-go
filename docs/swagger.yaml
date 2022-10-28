@@ -1,0 +1,111 @@
+basePath: /
+definitions:
+  controllers.DigestRequest:
+    properties:
+      data:
+        type: string
+    type: object
+  controllers.DigestResponse:
+    properties:
+      digest:
+        type: string
+    type: object
+  controllers.SignRequest:
+    properties:
+      digest:
+        type: string
+    type: object
+  controllers.SignResponse:
+    properties:
+      signature:
+        type: string
+    type: object
+  controllers.VerifyRequest:
+    properties:
+      data:
+        type: string
+      signature:
+        type: string
+    type: object
+  controllers.VerifyResponse:
+    properties:
+      valid:
+        type: boolean
+    type: object
+host: localhost:3000
+info:
+  contact: {}
+  description: Standalone cloudhsm-service
+  title: CloudHSM service API
+  version: "1.0"
+paths:
+  /digest:
+    post:
+      consumes:
+      - application/json
+      description: digest the data currently using sha256
+      parameters:
+      - description: Data to be digested
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.DigestRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.DigestResponse'
+      summary: Digest the data.
+      tags:
+      - digest
+  /sign:
+    post:
+      consumes:
+      - application/json
+      description: sign the digest using openssl or cloudhsm
+      parameters:
+      - description: Digest to be signed
+        in: body
+        name: digest
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.SignRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.SignResponse'
+      summary: Sign the digest.
+      tags:
+      - sign
+  /verify:
+    post:
+      consumes:
+      - application/json
+      description: verify the data using provided signature and public key, using
+        openssl or cloudhsm
+      parameters:
+      - description: Data to be verified
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.VerifyRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.VerifyResponse'
+      summary: Verify the Data.
+      tags:
+      - verify
+schemes:
+- http
+swagger: "2.0"

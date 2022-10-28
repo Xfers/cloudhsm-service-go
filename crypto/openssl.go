@@ -7,13 +7,13 @@ import (
 )
 
 type opensslSigner struct {
-	privateKeyPem string
+	privateKeyPem []byte
 	digest        string
 }
 
 func (s *opensslSigner) Sign() (string, error) {
 
-	priv, err := openssl.LoadPrivateKeyFromPEM([]byte(s.privateKeyPem))
+	priv, err := openssl.LoadPrivateKeyFromPEM(s.privateKeyPem)
 	if err != nil {
 		return "", err
 	}
@@ -35,7 +35,7 @@ func (s *opensslSigner) Sign() (string, error) {
 }
 
 type opensslVerifier struct {
-	publicKeyPem string
+	publicKeyPem []byte
 	signature    string
 	data         string
 }
@@ -43,7 +43,7 @@ type opensslVerifier struct {
 func (v *opensslVerifier) Verify() bool {
 
 	//get public key from string
-	priv, err := openssl.LoadPublicKeyFromPEM([]byte(v.publicKeyPem))
+	priv, err := openssl.LoadPublicKeyFromPEM(v.publicKeyPem)
 	if err != nil {
 		return false
 	}

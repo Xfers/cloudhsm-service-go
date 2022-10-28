@@ -4,17 +4,27 @@ type Signer interface {
 	Sign() (string, error)
 }
 
-func NewSigner(privateKeyPem, digest string, mode ...string) Signer {
+func NewSigner(privateKeyPemPath, digest string) Signer {
 
-	m := "rsa"
-	if len(mode) > 0 {
-		m = mode[0]
+	// Get key from pem file
+	privateKeyPem, err := GetKeyPem(privateKeyPemPath)
+	if err != nil {
+		return nil
+	}
+
+	//default CloudHSM
+	m := "CloudHSM"
+
+	// If CloudHSM not reachable, use OpenSSL
+	if !IsCloudHSMReachable() {
+		m = "openssl"
 	}
 
 	switch m {
 	case "openssl":
 		return &opensslSigner{privateKeyPem, digest}
 	default:
-		return &signer{privateKeyPem, digest}
+		// Here pretend to be CloudHSM but it is golang's rsa
+		return &rsaSigner{privateKeyPem, digest}
 	}
 }

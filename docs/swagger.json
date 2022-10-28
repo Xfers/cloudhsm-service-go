@@ -1,0 +1,171 @@
+{
+    "schemes": [
+        "http"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "Standalone cloudhsm-service",
+        "title": "CloudHSM service API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:3000",
+    "basePath": "/",
+    "paths": {
+        "/digest": {
+            "post": {
+                "description": "digest the data currently using sha256",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "digest"
+                ],
+                "summary": "Digest the data.",
+                "parameters": [
+                    {
+                        "description": "Data to be digested",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controllers.DigestRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.DigestResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/sign": {
+            "post": {
+                "description": "sign the digest using openssl or cloudhsm",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "sign"
+                ],
+                "summary": "Sign the digest.",
+                "parameters": [
+                    {
+                        "description": "Digest to be signed",
+                        "name": "digest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controllers.SignRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.SignResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/verify": {
+            "post": {
+                "description": "verify the data using provided signature and public key, using openssl or cloudhsm",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "verify"
+                ],
+                "summary": "Verify the Data.",
+                "parameters": [
+                    {
+                        "description": "Data to be verified",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controllers.VerifyRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.VerifyResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "controllers.DigestRequest": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.DigestResponse": {
+            "type": "object",
+            "properties": {
+                "digest": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.SignRequest": {
+            "type": "object",
+            "properties": {
+                "digest": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.SignResponse": {
+            "type": "object",
+            "properties": {
+                "signature": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.VerifyRequest": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "string"
+                },
+                "signature": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.VerifyResponse": {
+            "type": "object",
+            "properties": {
+                "valid": {
+                    "type": "boolean"
+                }
+            }
+        }
+    }
+}
