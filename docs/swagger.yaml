@@ -1,4 +1,3 @@
-basePath: /
 definitions:
   controllers.DigestRequest:
     properties:
@@ -10,9 +9,25 @@ definitions:
       digest:
         type: string
     type: object
-  controllers.SignRequest:
+  controllers.HealthResponse:
+    description: health check response
+    properties:
+      status:
+        type: string
+    type: object
+  controllers.PureSignRequest:
     properties:
       digest:
+        type: string
+    type: object
+  controllers.PureSignResponse:
+    properties:
+      signature:
+        type: string
+    type: object
+  controllers.SignRequest:
+    properties:
+      data:
         type: string
     type: object
   controllers.SignResponse:
@@ -32,12 +47,8 @@ definitions:
       valid:
         type: boolean
     type: object
-host: localhost:3000
 info:
   contact: {}
-  description: Standalone cloudhsm-service
-  title: CloudHSM service API
-  version: "1.0"
 paths:
   /digest:
     post:
@@ -61,6 +72,43 @@ paths:
       summary: Digest the data.
       tags:
       - digest
+  /health:
+    get:
+      consumes:
+      - application/json
+      description: health check
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.HealthResponse'
+      summary: Health check
+      tags:
+      - health
+  /pure-sign:
+    post:
+      consumes:
+      - application/json
+      description: sign the data using openssl or cloudhsm
+      parameters:
+      - description: Data to be signed
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.PureSignRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.PureSignResponse'
+      summary: Sign the data.
+      tags:
+      - pure-sign
   /sign:
     post:
       consumes:
@@ -106,6 +154,4 @@ paths:
       summary: Verify the Data.
       tags:
       - verify
-schemes:
-- http
 swagger: "2.0"

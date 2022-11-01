@@ -1,5 +1,7 @@
 package crypto
 
+// Not used, just for reference
+
 import (
 	"crypto"
 	"crypto/rand"

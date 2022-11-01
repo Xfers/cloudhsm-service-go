@@ -1,16 +1,8 @@
 {
-    "schemes": [
-        "http"
-    ],
     "swagger": "2.0",
     "info": {
-        "description": "Standalone cloudhsm-service",
-        "title": "CloudHSM service API",
-        "contact": {},
-        "version": "1.0"
+        "contact": {}
     },
-    "host": "localhost:3000",
-    "basePath": "/",
     "paths": {
         "/digest": {
             "post": {
@@ -41,6 +33,63 @@
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/controllers.DigestResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/health": {
+            "get": {
+                "description": "health check",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "health"
+                ],
+                "summary": "Health check",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.HealthResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/pure-sign": {
+            "post": {
+                "description": "sign the data using openssl or cloudhsm",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pure-sign"
+                ],
+                "summary": "Sign the data.",
+                "parameters": [
+                    {
+                        "description": "Data to be signed",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controllers.PureSignRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.PureSignResponse"
                         }
                     }
                 }
@@ -132,10 +181,35 @@
                 }
             }
         },
-        "controllers.SignRequest": {
+        "controllers.HealthResponse": {
+            "description": "health check response",
+            "type": "object",
+            "properties": {
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.PureSignRequest": {
             "type": "object",
             "properties": {
                 "digest": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.PureSignResponse": {
+            "type": "object",
+            "properties": {
+                "signature": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.SignRequest": {
+            "type": "object",
+            "properties": {
+                "data": {
                     "type": "string"
                 }
             }

@@ -50,6 +50,63 @@ const docTemplate = `{
                 }
             }
         },
+        "/health": {
+            "get": {
+                "description": "health check",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "health"
+                ],
+                "summary": "Health check",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.HealthResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/pure-sign": {
+            "post": {
+                "description": "sign the data using openssl or cloudhsm",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pure-sign"
+                ],
+                "summary": "Sign the data.",
+                "parameters": [
+                    {
+                        "description": "Data to be signed",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controllers.PureSignRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.PureSignResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/sign": {
             "post": {
                 "description": "sign the digest using openssl or cloudhsm",
@@ -136,10 +193,35 @@ const docTemplate = `{
                 }
             }
         },
-        "controllers.SignRequest": {
+        "controllers.HealthResponse": {
+            "description": "health check response",
+            "type": "object",
+            "properties": {
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.PureSignRequest": {
             "type": "object",
             "properties": {
                 "digest": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.PureSignResponse": {
+            "type": "object",
+            "properties": {
+                "signature": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.SignRequest": {
+            "type": "object",
+            "properties": {
+                "data": {
                     "type": "string"
                 }
             }
@@ -176,12 +258,12 @@ const docTemplate = `{
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "1.0",
-	Host:             "localhost:3000",
-	BasePath:         "/",
-	Schemes:          []string{"http"},
-	Title:            "CloudHSM service API",
-	Description:      "Standalone cloudhsm-service",
+	Version:          "",
+	Host:             "",
+	BasePath:         "",
+	Schemes:          []string{},
+	Title:            "",
+	Description:      "",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 }

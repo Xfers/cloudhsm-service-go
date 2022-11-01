@@ -1,16 +1,12 @@
 package crypto
 
+import openssl "github.com/libp2p/go-openssl"
+
 type Signer interface {
 	Sign() (string, error)
 }
 
-func NewSigner(privateKeyPemPath, digest string) Signer {
-
-	// Get key from pem file
-	privateKeyPem, err := GetKeyPem(privateKeyPemPath)
-	if err != nil {
-		return nil
-	}
+func NewSigner(priv *openssl.PrivateKey, data string) Signer {
 
 	//default CloudHSM
 	m := "CloudHSM"
@@ -22,9 +18,9 @@ func NewSigner(privateKeyPemPath, digest string) Signer {
 
 	switch m {
 	case "openssl":
-		return &opensslSigner{privateKeyPem, digest}
+		return &opensslSigner{priv, data}
 	default:
-		// Here pretend to be CloudHSM but it is golang's rsa
-		return &rsaSigner{privateKeyPem, digest}
+		//TODO: implement CloudHSM
+		return nil
 	}
 }

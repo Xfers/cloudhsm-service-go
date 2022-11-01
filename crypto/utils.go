@@ -7,11 +7,11 @@ func IsCloudHSMReachable() bool {
 	return false
 }
 
-func GetKeyPem(privateKeyPemPath string) ([]byte, error) {
+func GetKeyPem(KeyPath *string) ([]byte, error) {
 	// Read key from pem file
-	privateKeyPem, err := ioutil.ReadFile(privateKeyPemPath)
+	keyPem, err := ioutil.ReadFile(*KeyPath)
 	if err != nil {
 		return nil, err
 	}
-	return privateKeyPem, nil
+	return keyPem, nil
 }

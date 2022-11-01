@@ -7,25 +7,19 @@ import (
 )
 
 type opensslSigner struct {
-	privateKeyPem []byte
-	digest        string
+	priv *openssl.PrivateKey
+	data string
 }
 
 func (s *opensslSigner) Sign() (string, error) {
 
-	priv, err := openssl.LoadPrivateKeyFromPEM(s.privateKeyPem)
+	// Get Digest
+	digest, err := Digest(s.data)
 	if err != nil {
 		return "", err
 	}
 
-	// get []byte from digest
-	digestBa, err := base64.URLEncoding.DecodeString(s.digest)
-	if err != nil {
-		return "", err
-	}
-
-	//sign
-	sig, err := priv.SignPKCS1v15(openssl.SHA256_Method, digestBa)
+	sig, err := sign(digest, s.priv)
 	if err != nil {
 		return "", err
 	}
@@ -34,21 +28,46 @@ func (s *opensslSigner) Sign() (string, error) {
 	return base64.URLEncoding.EncodeToString(sig), nil
 }
 
+type opensslPureSigner struct {
+	priv   *openssl.PrivateKey
+	digest string
+}
+
+func (s *opensslPureSigner) Sign() (string, error) {
+
+	sig, err := sign(s.digest, s.priv)
+	if err != nil {
+		return "", err
+	}
+
+	//return signature base64 encoded
+	return base64.URLEncoding.EncodeToString(sig), nil
+}
+
+func sign(digest string, priv *openssl.PrivateKey) ([]byte, error) {
+	digestBa, err := base64.URLEncoding.DecodeString(digest)
+	if err != nil {
+		return nil, err
+	}
+
+	// Sign
+	sig, err := (*priv).SignPKCS1v15(openssl.SHA256_Method, digestBa)
+	if err != nil {
+		return nil, err
+	}
+
+	//return signature
+	return sig, nil
+}
+
 type opensslVerifier struct {
-	publicKeyPem []byte
-	signature    string
-	data         string
+	pub       *openssl.PublicKey
+	signature string
+	data      string
 }
 
 func (v *opensslVerifier) Verify() bool {
 
-	//get public key from string
-	priv, err := openssl.LoadPublicKeyFromPEM(v.publicKeyPem)
-	if err != nil {
-		return false
-	}
-
-	//get []byte from data
 	digest, err := Digest(v.data)
 	if err != nil {
 		return false
@@ -58,14 +77,13 @@ func (v *opensslVerifier) Verify() bool {
 		return false
 	}
 
-	//get []byte from signature
 	sig, err := base64.URLEncoding.DecodeString(v.signature)
 	if err != nil {
 		return false
 	}
 
 	//verify
-	err = priv.VerifyPKCS1v15(openssl.SHA256_Method, digestBa, sig)
+	err = (*v.pub).VerifyPKCS1v15(openssl.SHA256_Method, digestBa, sig)
 
 	return err == nil
 }

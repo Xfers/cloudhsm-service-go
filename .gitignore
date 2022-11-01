@@ -1,3 +1,7 @@
 .vscode/
 testpublic.pem
 testrsaprivkey.pem
+testpublic1.pem
+testpublic2.pem
+testrsaprivkey1.pem
+testrsaprivkey2.pem
