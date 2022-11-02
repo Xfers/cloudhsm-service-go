@@ -26,7 +26,7 @@ func (s *rsaSigner) Sign() (string, error) {
 	}
 
 	// get []byte from digest
-	digestBa, err := base64.URLEncoding.DecodeString(s.digest)
+	digestBa, err := base64.StdEncoding.DecodeString(s.digest)
 	if err != nil {
 		return "", err
 	}
@@ -38,7 +38,7 @@ func (s *rsaSigner) Sign() (string, error) {
 	}
 
 	//return signature
-	return base64.URLEncoding.EncodeToString(sig), nil
+	return base64.StdEncoding.EncodeToString(sig), nil
 }
 
 type verifier struct {
@@ -60,13 +60,13 @@ func (v *verifier) Verify() bool {
 	if err != nil {
 		return false
 	}
-	digestBa, err := base64.URLEncoding.DecodeString(digest)
+	digestBa, err := base64.StdEncoding.DecodeString(digest)
 	if err != nil {
 		return false
 	}
 
 	//get []byte from signature
-	sig, err := base64.URLEncoding.DecodeString(v.signature)
+	sig, err := base64.StdEncoding.DecodeString(v.signature)
 	if err != nil {
 		return false
 	}

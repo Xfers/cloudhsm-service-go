@@ -35,7 +35,6 @@ var signCmd = &cobra.Command{
 		keyFile, _ := cmd.Flags().GetString("key")
 		stringToSign, _ := cmd.Flags().GetString("string")
 		fileToSign, _ := cmd.Flags().GetString("file")
-		signFromStdin, _ := cmd.Flags().GetBool("stdin")
 
 		// Check flags
 		if stringToSign != "" && fileToSign != "" {
@@ -43,8 +42,9 @@ var signCmd = &cobra.Command{
 			return
 		}
 
-		if stringToSign == "" && fileToSign == "" && !signFromStdin {
-			fmt.Println("Please specify string, file or stdin")
+		// Check if key is specified
+		if keyFile == "" {
+			fmt.Println("Please specify key")
 			return
 		}
 
@@ -71,13 +71,18 @@ var signCmd = &cobra.Command{
 				return
 			}
 			data = string(dataBa)
-		case signFromStdin:
+		default:
+			// Get data from stdin
 			dataBa, err := ioutil.ReadAll(cmd.InOrStdin())
 			if err != nil {
 				fmt.Println(err)
 				return
 			}
 			data = string(dataBa)
+			if data == "" {
+				fmt.Println("Please provide data to sign")
+				return
+			}
 		}
 
 		// Sign
@@ -89,7 +94,6 @@ var signCmd = &cobra.Command{
 		}
 
 		fmt.Println(signature)
-
 	},
 }
 

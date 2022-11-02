@@ -12,5 +12,5 @@ func Digest(data string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return base64.URLEncoding.EncodeToString(hasher.Sum(nil)), nil
+	return base64.StdEncoding.EncodeToString(hasher.Sum(nil)), nil
 }

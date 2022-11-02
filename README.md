@@ -13,43 +13,58 @@ openssl genrsa -out testrsaprivkey2.pem 2048
 openssl rsa -in testrsaprivkey2.pem -outform PEM -pubout -out testpublic2.pem
 ```
 
+## How To Build the Executable
+
+```bash
+# build the executable
+go build -o hsm-service main.go 
+```
+
 ## How to run the server
 
 ```bash
 # run the server the signer services 
-go run main.go --k1 testrsaprivkey.pem --k2 testrsaprivkey2.pem
+./hsm-service serve --k1 testrsaprivkey.pem --k2 testrsaprivkey2.pem
 
-# or like this (signer is the default mode):
-go run main.go --mode signer--k1 testrsaprivkey.pem --k2 testrsaprivkey2.pem
+# or like this (signer is the default mode, so that is why it was omitted above ):
+./hsm-service serve --mode signer --k1 testrsaprivkey.pem --k2 testrsaprivkey2.pem
 
-# or shorter flag:
-go run main.go -m signer --k1 testrsaprivkey.pem --k2 testrsaprivkey2.pem
+# or shorter flag (-m):
+./hsm-service serve -m signer --k1 testrsaprivkey.pem --k2 testrsaprivkey2.pem
 
 # run the server with the verifier services
-go run main.go --mode verifier --k1 testpublic.pem --k2 testpublic2.pem
+./hsm-service serve --mode verifier --k1 testpublic.pem --k2 testpublic2.pem
 
  ```
 
  ## How to run the commands
 
 ```bash
-# run the signer command
+# run the sign command
 
 # Sign from string:
-go run main.go sign -k $YOUR_KEY_FILE -s "hello"
+./hsm-service sign -k $YOUR_KEY_FILE -s "hello"
 
 # Sign from file:
-go run main.go sign -k $YOUR_KEY_FILE -f $YOUR_FILE
+./hsm-service sign -k $YOUR_KEY_FILE -f $YOUR_FILE
 
 # Sign from stdin:
-cat $YOUR_FILE | go run main.go sign -k $YOUR_KEY_FILE
+cat $YOUR_FILE | ./hsm-service sign -k $YOUR_KEY_FILE
 # or
-echo "hello" | go run main.go sign -k $YOUR_KEY_FILE
+echo -n "hello" | ./hsm-service sign -k $YOUR_KEY_FILE
 ```
 
 ```bash
 # run the pure-sign command
-echo -n "hello" | openssl dgst -sha256 -binary - | base64 -w 0 | go run main.go pure-sign -k $YOUR_KEY_FILE`,
+
+# Sign from string(digested "hello"):
+./hsm-service sign -k $YOUR_KEY_FILE -s "LPJNul+wow4m6DsqxbninhsWHlwfp0JecwQzYpOLmCQ="
+
+# Sign from file (that holds the digest):
+./hsm-service sign -k $YOUR_KEY_FILE -f $YOUR_DIGEST_FILE
+
+# Sign from stdin:
+echo -n "hello" | openssl dgst -sha256 -binary - | base64 -w 0 | ./hsm-service pure-sign -k $YOUR_KEY_FILE
 ```
 
 

@@ -1,0 +1,187 @@
+{
+    "keys": {
+        "k1": "../test/test_keys/testrsaprivkey.pem",
+        "k2": "../test/test_keys/testrsaprivkey1.pem",
+        "k3": "../test/test_keys/testrsaprivkey2.pem"
+    },
+    "tests": [
+        {
+            "name": "digest",
+            "data": [
+                {
+                    "endpoint": "/api/digest",
+                    "body": {
+                        "data": "c9b9a0f0a2d4b7d1ccf2b0a8e2c2f6b9"
+                    },
+                    "expected": {
+                        "digest": "T1ZlzNTqpDyq48Pi/iqlBVNm07derefX9JrxbVuHqH8="
+                    },
+                    "method": "POST",
+                    "StatusCode": 200,
+                    "headers": {
+                        "Content-Type": "application/json"
+                    }
+                },
+                {
+                    "endpoint": "/api/digest",
+                    "body": {
+                        "data": "hello world"
+                    },
+                    "expected": {
+                        "digest": "uU0nuZNNPgilLlLX2n2r+sSE7+N6U4DukIj3rOLvzek="
+                    },
+                    "method": "POST",
+                    "StatusCode": 200,
+                    "headers": {
+                        "Content-Type": "application/json"
+                    }
+                },
+                {
+                    "endpoint": "/api/digest",
+                    "body": {
+                        "data": "7316091045"
+                    },
+                    "expected": {
+                        "digest": "b/WKTZzdtfCzEp1q6yQPpttNHv29qqGgvSTA3oKp8ao="
+                    },
+                    "method": "POST",
+                    "StatusCode": 200,
+                    "headers": {
+                        "Content-Type": "application/json"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "sign",
+            "data": [
+                {
+                    "endpoint": "/api/sign/k1",
+                    "body": {
+                        "data": "hello"
+                    },
+                    "expected": {
+                        "signature": "Ef47ok1KFhZtSyfZyAh0nx18di7eLiKTLOfKXtcefXKEMk54NrPfcMxTC4bC+4bOlT0MjhTe6ceH4w4Q+OVpgym0c6rNM+3+3T0k7A1X+X4TrcIgw2aoyFAzZYPFmuBGtgTFHcBD0m7dfbKBk7vRw0LAi9f8nVba+bUsu+cY9vMTxdoRwxwfka41wCu81eG6S04w6eSV5geoiczl0Y1mn6ogIszuLNnpwm15m3NolDRQqHcFfnLKDXZTwrUwgZhOVmkBxrL8zOEbpETe/mZOY/ynn1EJL2SNVuuRUgRHWOg8NvTpZQp5yDcgUxf8sisYl1uKOD/sp1IBR4iefv7FIg=="
+                    },
+                    "method": "POST",
+                    "StatusCode": 200,
+                    "headers": {
+                        "Content-Type": "application/json"
+                    }
+                },
+                {
+                    "endpoint": "/api/sign/k1",
+                    "body": {
+                        "data": "hello world"
+                    },
+                    "expected": {
+                        "signature": "sjvWftnU0tMsIlM7bdWanJyhRwa4lbSCkjsQL7/ta9Nv3ZCF0ghCJWtwYO8zb8NIAR/KOD3rkStHF12PhlRTMbpLA0RmQ2dzwPABtWYIAsnxMf3fSJw86yXqDJuz/R2SN7JszJtMfQ6P5YUUiOSbKFqJaZKoXqbviYW0hfcQ2wK+2KRe3EnlOCP+Zh4e4vKEQ0Dy0SaNkf8iuxuUYpyBhDS4zGEQ2ET7CDLU+oRiK9H7luZQQFt/jhCG3j72ToDTgieX5WoP2psquNUpW9bGMxEpkOPuidiGZkVTQBYf7FsnSH27J2liRWiPJDWTQAO7PWzCvOd9cY+7Kga20efe7w=="
+                    },
+                    "method": "POST",
+                    "StatusCode": 200,
+                    "headers": {
+                        "Content-Type": "application/json"
+                    }
+                },
+                {
+                    "endpoint": "/api/sign/k1",
+                    "body": {
+                        "data": "731609   104 5dwqfdwqfqw12321321^^&$^&$"
+                    },
+                    "expected": {
+                        "signature": "mYyiIBjJ7oogllo7oYvx9ibkgmXgPdIeBgR+BDksIrj1+a+pjPuEygDA1gxR9op+9M7U0eLwLvAaG4KiL36wcEmb6KY5d8FK8hDjsmLl1ULp/HiQNo5UFwZ6/Fn1+izECAh4YPuic70+s3cgp+0Lahbc8nYMcluld46V06ioGHGryhxudRD90BXkNvflfBe1iesIjCWo9PYrGWhd6cfLR6vA8De7Pw3oBKM6W+2CDxDi0YKGFwNG4LT64wV2OfH03h40Gl4RASD0oTnmvhmQ1YUsR6PZXCRczBqv+eGATvHbuz6TXZVQ16G5leIm6E0vY/DZXclIhWFYxDnI6Vq8mA=="
+                    },
+                    "method": "POST",
+                    "StatusCode": 200,
+                    "headers": {
+                        "Content-Type": "application/json"
+                    }
+                },
+                {
+                    "endpoint": "/api/sign/k2",
+                    "body": {
+                        "data": "hello"
+                    },
+                    "expected": {
+                        "signature": "l/BptwPrm2bWvSgZMuzZNfmdRdTW/1JK9HCi5h4Yr7iYLvfRIU7ffaGneBmQ3fZIJpaevNEjKxn2B9tS0ZJBKIssz+wL94pNqiAM+//W3CCXJoCz4bCOY9XAo6ajEeFBioqEjJJolQQR3W0SJ4FT7vG08Lz3SjBqJZgrpPdk2bFt6WTzODrpNQTQCObv9/+5IwR2Oi3wgHu3O+zaaxCJGbbHcCRio48xOdOmi8FOghhlikelyItNG5DgtjXwqMLx8Z0Uvv01MXeWZYQRPtn/szVqRphXfY840W4Mp5TumlBZzPY4+vDjJjphgxzhxL0KJ4ts+urRTHF7fDqoZGVIaw=="
+                    },
+                    "method": "POST",
+                    "StatusCode": 200,
+                    "headers": {
+                        "Content-Type": "application/json"
+                    }
+                },
+                {
+                    "endpoint": "/api/sign/k2",
+                    "body": {
+                        "data": "hello world"
+                    },
+                    "expected": {
+                        "signature": "m6GBAlESoBGjN7GEK3WNrFtiVndc8zSOIJcEmVGtwo97d2dxRWAS57T6k4sfluCzfyM3SNmuFl4QwT14xmCy8WkA60Dl7WQcxGDycFt35Ss8I/mqMDFY1glkM1MUJzG3c1s7E7ahCnO1bRqZt+FETFRBeUiSFOBZM9LMzS6qhjr/ZQAf+HkGdG3Ap2ybAW924xyaMz+GqYRIp0OiZ+wYeXmhhmc2gFljw0rR7kBti9BT1nTe7tiTBobW4SprmWCoWLBYaOgZizn8B+CJfCTZSqShpEE9OOP/IZ5MF8RqyBnPcizYqfnkrIkXbqBviQTxWdElULIak1LLjdUs47PRYQ=="
+                    },
+                    "method": "POST",
+                    "StatusCode": 200,
+                    "headers": {
+                        "Content-Type": "application/json"
+                    }
+                },
+                {
+                    "endpoint": "/api/sign/k2",
+                    "body": {
+                        "data": "731609   104 5dwqfdwqfqw12321321^^&$^&$"
+                    },
+                    "expected": {
+                        "signature": "a/sr7bYJgMvPjpRRDQt+9xDyJfcM4Ug+qGRvZcVlcKOsHF7lc009jDjzTpa8dvU5WQM6VgYoZ3GOT+LwDPtVnvmGPtIep4w1m18qmRTUJ38yn4ugtHj9sV6OMJTwGxjvmusC8aBRgdkkWX/QSCqGPl28SXxqIyoqOzPmKbm8IrUuM+hycMHLwdWamYYKNfNoefqu9JnqooO2i7BnB7Va52q3fYuSa7XOf6SQ+gQgeB/svrrbcp7tPIFGYSd5J9oKZ7SRxtcpfkXVGSIaN58gMvcBHy9znH5yWhOhhvfLlIy33w+ZzSXA1rKfJ5LrzqtOnmgV915cS++G4lhZ/N9c3Q=="
+                    },
+                    "method": "POST",
+                    "StatusCode": 200,
+                    "headers": {
+                        "Content-Type": "application/json"
+                    }
+                },
+                {
+                    "endpoint": "/api/sign/k3",
+                    "body": {
+                        "data": "hello"
+                    },
+                    "expected": {
+                        "signature": "EJW5UfUxjzwVaizhgy5tKPDf+ffdk5cmmX80hx36ESSYWhY2CR7JxsR3byt1NE5KpkiKQEdG+ksTYfSSWcaH2v31NwUGKLlVCbe52TSXEMNV6ecRSrrvRDypYFMhohvjJILqEcIF35VBoT4JSNELw5Rr178CH5PoP81GLkHOJts4oMI2MkjAdbsKGZRj0UWMraLmBHOkW2muu8bsKeqBYtKka2QrrtKOzRzkXAqwNPzWo33qbLcSC2JmTqemyQEXkluA+psd2LcwFdzl6vplebFDagMSBCNw8Xi4T+Hx5YT8OYQi8Bv2i2Y8Q3ARD+WloU2m/zwFwKorSyZQwNpdUA=="
+                    },
+                    "method": "POST",
+                    "StatusCode": 200,
+                    "headers": {
+                        "Content-Type": "application/json"
+                    }
+                },
+                {
+                    "endpoint": "/api/sign/k3",
+                    "body": {
+                        "data": "hello world"
+                    },
+                    "expected": {
+                        "signature": "Dq6nzk7YTP4sFvQ7FuCGrHosh9Q6y/ZQAGfJOoN8euLAZXLabRLuEo//b9jwWs8C+bXhDcA3m1D8fz6QXCAG6ZrgBMHJ3dyszK1IZ5GYJXL2SNseJerH17IPO2DGGNR8EDfrxqq0ct2UeTWV3IXicqXWtg6e4b2VrMSVjpckRx6elQ7l16cqKRF6NwmUef+Wsq38ThsAlRZtrpAkXKod5YXcXspf0UOvtu0K2L0GbBlHq0YKqNXnhBLYHHSSL3EiTvkzdbbGGl0ucviBi+9aUWMS9VFHUoHmJqn63Dldwh6Vk5maaabsp5KCH4Dui/bxmvy6ZhitG37CU4y9ncDM/g=="
+                    },
+                    "method": "POST",
+                    "StatusCode": 200,
+                    "headers": {
+                        "Content-Type": "application/json"
+                    }
+                },
+                {
+                    "endpoint": "/api/sign/k3",
+                    "body": {
+                        "data": "731609   104 5dwqfdwqfqw12321321^^&$^&$"
+                    },
+                    "expected": {
+                        "signature": "wr+EuKyzIPbCJxoBj23IJdoeeHC0wVe/AQ8CZmoTTw8DveiUrSIsrBYkztc8uL/lDpKWHzp+RyveouJcsWJ0/2H9L3M6Mmxumx/2fr0CyIwuw5uJwdh9fmgE1oKL9aFI29fEWkVWJFDv6iYZI++PQbmLhdqQfU7Ju2ZPqidHIQdtNV6ysp4/h7y9X18tpTFSPeD7DId+N/51QUqcRA8lbwokkgA2x/2YXiTeA16g+s+apE9UgNYVRkXg1fB3sUKhkOIPhXAbXBmP9JChtrSbGVPaBMmrtfp8YaREKS0E+LwqEneoY+y6qKr2crmEfIXnxiibQs29kjso/9Zg8PC6Jw=="
+                    },
+                    "method": "POST",
+                    "StatusCode": 200,
+                    "headers": {
+                        "Content-Type": "application/json"
+                    }
+                }
+            ]
+        }
+    ]
+}

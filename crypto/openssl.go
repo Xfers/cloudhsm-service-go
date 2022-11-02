@@ -25,7 +25,7 @@ func (s *opensslSigner) Sign() (string, error) {
 	}
 
 	//return signature
-	return base64.URLEncoding.EncodeToString(sig), nil
+	return base64.StdEncoding.EncodeToString(sig), nil
 }
 
 type opensslPureSigner struct {
@@ -41,11 +41,11 @@ func (s *opensslPureSigner) Sign() (string, error) {
 	}
 
 	//return signature base64 encoded
-	return base64.URLEncoding.EncodeToString(sig), nil
+	return base64.StdEncoding.EncodeToString(sig), nil
 }
 
 func sign(digest string, priv *openssl.PrivateKey) ([]byte, error) {
-	digestBa, err := base64.URLEncoding.DecodeString(digest)
+	digestBa, err := base64.StdEncoding.DecodeString(digest)
 	if err != nil {
 		return nil, err
 	}
@@ -72,12 +72,12 @@ func (v *opensslVerifier) Verify() bool {
 	if err != nil {
 		return false
 	}
-	digestBa, err := base64.URLEncoding.DecodeString(digest)
+	digestBa, err := base64.StdEncoding.DecodeString(digest)
 	if err != nil {
 		return false
 	}
 
-	sig, err := base64.URLEncoding.DecodeString(v.signature)
+	sig, err := base64.StdEncoding.DecodeString(v.signature)
 	if err != nil {
 		return false
 	}
