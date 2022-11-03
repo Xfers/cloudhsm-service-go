@@ -16,7 +16,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/digest": {
+        "/api/digest": {
             "post": {
                 "description": "digest the data currently using sha256",
                 "consumes": [
@@ -50,7 +50,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/health": {
+        "/api/health": {
             "get": {
                 "description": "health check",
                 "consumes": [
@@ -73,7 +73,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/pure-sign": {
+        "/api/pure-sign/{keyName}": {
             "post": {
                 "description": "sign the data using openssl or cloudhsm",
                 "consumes": [
@@ -87,6 +87,16 @@ const docTemplate = `{
                 ],
                 "summary": "Sign the data.",
                 "parameters": [
+                    {
+                        "maxLength": 2,
+                        "minLength": 2,
+                        "type": "string",
+                        "example": "k1",
+                        "description": "Key Name",
+                        "name": "keyName",
+                        "in": "path",
+                        "required": true
+                    },
                     {
                         "description": "Data to be signed",
                         "name": "data",
@@ -107,7 +117,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/sign": {
+        "/api/sign/{keyName}": {
             "post": {
                 "description": "sign the digest using openssl or cloudhsm",
                 "consumes": [
@@ -122,8 +132,18 @@ const docTemplate = `{
                 "summary": "Sign the digest.",
                 "parameters": [
                     {
-                        "description": "Digest to be signed",
-                        "name": "digest",
+                        "maxLength": 2,
+                        "minLength": 2,
+                        "type": "string",
+                        "example": "k1",
+                        "description": "Key Name",
+                        "name": "keyName",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Data to be signed",
+                        "name": "data",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -141,7 +161,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/verify": {
+        "/api/verify/{keyName}": {
             "post": {
                 "description": "verify the data using provided signature and public key, using openssl or cloudhsm",
                 "consumes": [
@@ -163,6 +183,16 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/controllers.VerifyRequest"
                         }
+                    },
+                    {
+                        "maxLength": 2,
+                        "minLength": 2,
+                        "type": "string",
+                        "example": "k1",
+                        "description": "Key Name",
+                        "name": "keyName",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {

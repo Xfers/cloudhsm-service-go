@@ -24,7 +24,7 @@ type DigestResponse struct {
 // @Produce json
 // @Param data body DigestRequest true "Data to be digested"
 // @Success 200 {object} DigestResponse
-// @Router /digest [post]
+// @Router /api/digest [post]
 func DigestController(c *gin.Context) {
 	// Get data from request body json
 	var digestRequest DigestRequest
@@ -61,9 +61,10 @@ type SignResponse struct {
 // @Tags sign
 // @Accept json
 // @Produce json
-// @Param digest body SignRequest true "Digest to be signed"
+// @Param keyName path string true "Key Name" example(k1) minLength(2) maxLength(2) pattern([a-z]+) style(simple) allowEmptyValue(false)
+// @Param data body SignRequest true "Data to be signed"
 // @Success 200 {object} SignResponse
-// @Router /sign [post]
+// @Router /api/sign/{keyName} [post]
 func SignController(c *gin.Context) {
 	// Get data from request body json
 	var signRequest SignRequest
@@ -117,9 +118,10 @@ type PureSignResponse struct {
 // @Tags pure-sign
 // @Accept json
 // @Produce json
+// @Param keyName path string true "Key Name" example(k1) minLength(2) maxLength(2) pattern([a-z]+) style(simple) allowEmptyValue(false)
 // @Param data body PureSignRequest true "Data to be signed"
 // @Success 200 {object} PureSignResponse
-// @Router /pure-sign [post]
+// @Router /api/pure-sign/{keyName} [post]
 func PureSignController(c *gin.Context) {
 	// Get data from request body json
 	var pureSignRequest PureSignRequest
@@ -175,8 +177,9 @@ type VerifyResponse struct {
 // @Accept json
 // @Produce json
 // @Param data body VerifyRequest true "Data to be verified"
+// @Param keyName path string true "Key Name" example(k1) minLength(2) maxLength(2) pattern([a-z]+) style(simple) allowEmptyValue(false)
 // @Success 200 {object} VerifyResponse
-// @Router /verify [post]
+// @Router /api/verify/{keyName} [post]
 func VerifyController(c *gin.Context) {
 	// Get data from request body json
 	var verifyRequest VerifyRequest

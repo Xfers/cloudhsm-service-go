@@ -13,7 +13,7 @@ import (
 // @Accept json
 // @Produce json
 // @Success 200 {object} HealthResponse
-// @Router /health [get]
+// @Router /api/health [get]
 type HealthResponse struct {
 	Status string `json:"status"`
 }
@@ -25,7 +25,7 @@ type HealthResponse struct {
 // @Accept json
 // @Produce json
 // @Success 200 {object} HealthResponse
-// @Router /health [get]
+// @Router /api/health [get]
 func HealthController(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"message": "ok",

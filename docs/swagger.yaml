@@ -50,7 +50,7 @@ definitions:
 info:
   contact: {}
 paths:
-  /digest:
+  /api/digest:
     post:
       consumes:
       - application/json
@@ -72,7 +72,7 @@ paths:
       summary: Digest the data.
       tags:
       - digest
-  /health:
+  /api/health:
     get:
       consumes:
       - application/json
@@ -87,12 +87,20 @@ paths:
       summary: Health check
       tags:
       - health
-  /pure-sign:
+  /api/pure-sign/{keyName}:
     post:
       consumes:
       - application/json
       description: sign the data using openssl or cloudhsm
       parameters:
+      - description: Key Name
+        example: k1
+        in: path
+        maxLength: 2
+        minLength: 2
+        name: keyName
+        required: true
+        type: string
       - description: Data to be signed
         in: body
         name: data
@@ -109,15 +117,23 @@ paths:
       summary: Sign the data.
       tags:
       - pure-sign
-  /sign:
+  /api/sign/{keyName}:
     post:
       consumes:
       - application/json
       description: sign the digest using openssl or cloudhsm
       parameters:
-      - description: Digest to be signed
+      - description: Key Name
+        example: k1
+        in: path
+        maxLength: 2
+        minLength: 2
+        name: keyName
+        required: true
+        type: string
+      - description: Data to be signed
         in: body
-        name: digest
+        name: data
         required: true
         schema:
           $ref: '#/definitions/controllers.SignRequest'
@@ -131,7 +147,7 @@ paths:
       summary: Sign the digest.
       tags:
       - sign
-  /verify:
+  /api/verify/{keyName}:
     post:
       consumes:
       - application/json
@@ -144,6 +160,14 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/controllers.VerifyRequest'
+      - description: Key Name
+        example: k1
+        in: path
+        maxLength: 2
+        minLength: 2
+        name: keyName
+        required: true
+        type: string
       produces:
       - application/json
       responses:
