@@ -1,20 +1,26 @@
 package crypto
 
+import openssl "github.com/libp2p/go-openssl"
+
 type Verifier interface {
 	Verify() bool
 }
 
-func NewVerifier(publicKeyPem, signature, data string, mode ...string) Verifier {
+func NewVerifier(publicKey *openssl.PublicKey, signature, data string) Verifier {
 
-	m := "rsa"
-	if len(mode) > 0 {
-		m = mode[0]
+	//default CloudHSM
+	m := "CloudHSM"
+
+	// If CloudHSM not reachable, use OpenSSL
+	if !IsCloudHSMReachable() {
+		m = "openssl"
 	}
 
 	switch m {
 	case "openssl":
-		return &opensslVerifier{publicKeyPem, signature, data}
+		return &opensslVerifier{publicKey, signature, data}
 	default:
-		return &verifier{publicKeyPem, signature, data}
+		//TODO: implement CloudHSM
+		return nil
 	}
 }

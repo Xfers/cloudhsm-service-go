@@ -1,5 +1,7 @@
 package crypto
 
+// Not used, just for reference
+
 import (
 	"crypto"
 	"crypto/rand"
@@ -10,12 +12,12 @@ import (
 	"errors"
 )
 
-type signer struct {
-	privateKeyPem string
+type rsaSigner struct {
+	privateKeyPem []byte
 	digest        string
 }
 
-func (s *signer) Sign() (string, error) {
+func (s *rsaSigner) Sign() (string, error) {
 
 	// get private key from string
 	priv, err := getPrivateKeyFromPem(s.privateKeyPem)
@@ -24,7 +26,7 @@ func (s *signer) Sign() (string, error) {
 	}
 
 	// get []byte from digest
-	digestBa, err := base64.URLEncoding.DecodeString(s.digest)
+	digestBa, err := base64.StdEncoding.DecodeString(s.digest)
 	if err != nil {
 		return "", err
 	}
@@ -36,11 +38,11 @@ func (s *signer) Sign() (string, error) {
 	}
 
 	//return signature
-	return base64.URLEncoding.EncodeToString(sig), nil
+	return base64.StdEncoding.EncodeToString(sig), nil
 }
 
 type verifier struct {
-	publicKeyPem string
+	publicKeyPem []byte
 	signature    string
 	data         string
 }
@@ -58,13 +60,13 @@ func (v *verifier) Verify() bool {
 	if err != nil {
 		return false
 	}
-	digestBa, err := base64.URLEncoding.DecodeString(digest)
+	digestBa, err := base64.StdEncoding.DecodeString(digest)
 	if err != nil {
 		return false
 	}
 
 	//get []byte from signature
-	sig, err := base64.URLEncoding.DecodeString(v.signature)
+	sig, err := base64.StdEncoding.DecodeString(v.signature)
 	if err != nil {
 		return false
 	}
@@ -75,8 +77,8 @@ func (v *verifier) Verify() bool {
 	return err == nil
 }
 
-func getPrivateKeyFromPem(pemPrivateKey string) (*rsa.PrivateKey, error) {
-	block, _ := pem.Decode([]byte(pemPrivateKey))
+func getPrivateKeyFromPem(pemPrivateKey []byte) (*rsa.PrivateKey, error) {
+	block, _ := pem.Decode(pemPrivateKey)
 	if block == nil {
 		return nil, errors.New("failed to decode Private Key")
 	}
@@ -87,8 +89,8 @@ func getPrivateKeyFromPem(pemPrivateKey string) (*rsa.PrivateKey, error) {
 	return priv, nil
 }
 
-func getPublicKeyFromPem(pemPublicKey string) (*rsa.PublicKey, error) {
-	block, _ := pem.Decode([]byte(pemPublicKey))
+func getPublicKeyFromPem(pemPublicKey []byte) (*rsa.PublicKey, error) {
+	block, _ := pem.Decode(pemPublicKey)
 	if block == nil {
 		return nil, errors.New("failed to decode Public Key")
 	}

@@ -2,11 +2,11 @@ package crypto
 
 import openssl "github.com/libp2p/go-openssl"
 
-type Signer interface {
+type PureSigner interface {
 	Sign() (string, error)
 }
 
-func NewSigner(priv *openssl.PrivateKey, data string) Signer {
+func NewPureSigner(priv *openssl.PrivateKey, digest string) Signer {
 
 	//default CloudHSM
 	m := "CloudHSM"
@@ -18,7 +18,7 @@ func NewSigner(priv *openssl.PrivateKey, data string) Signer {
 
 	switch m {
 	case "openssl":
-		return &opensslSigner{priv, data}
+		return &opensslPureSigner{priv, digest}
 	default:
 		//TODO: implement CloudHSM
 		return nil
