@@ -67,7 +67,15 @@ echo -n "hello" | ./hsm-service sign -k $YOUR_KEY_FILE
 echo -n "hello" | openssl dgst -sha256 -binary - | base64 -w 0 | ./hsm-service pure-sign -k $YOUR_KEY_FILE
 ```
 
+## How to build the swagger docs
 
+```bash
+# build the swagger docs (swaggo is required: go install github.com/swaggo/swag/cmd/swag@latest )
+swag init -g main.go --output docs
+```
 
+### Swagger docs are available at:
 
-
+```url
+ {HOST}:{PORT}/swagger/index.html
+```

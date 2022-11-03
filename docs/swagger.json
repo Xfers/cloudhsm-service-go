@@ -4,7 +4,7 @@
         "contact": {}
     },
     "paths": {
-        "/digest": {
+        "/api/digest": {
             "post": {
                 "description": "digest the data currently using sha256",
                 "consumes": [
@@ -38,7 +38,7 @@
                 }
             }
         },
-        "/health": {
+        "/api/health": {
             "get": {
                 "description": "health check",
                 "consumes": [
@@ -61,7 +61,7 @@
                 }
             }
         },
-        "/pure-sign": {
+        "/api/pure-sign/{keyName}": {
             "post": {
                 "description": "sign the data using openssl or cloudhsm",
                 "consumes": [
@@ -75,6 +75,16 @@
                 ],
                 "summary": "Sign the data.",
                 "parameters": [
+                    {
+                        "maxLength": 2,
+                        "minLength": 2,
+                        "type": "string",
+                        "example": "k1",
+                        "description": "Key Name",
+                        "name": "keyName",
+                        "in": "path",
+                        "required": true
+                    },
                     {
                         "description": "Data to be signed",
                         "name": "data",
@@ -95,7 +105,7 @@
                 }
             }
         },
-        "/sign": {
+        "/api/sign/{keyName}": {
             "post": {
                 "description": "sign the digest using openssl or cloudhsm",
                 "consumes": [
@@ -110,8 +120,18 @@
                 "summary": "Sign the digest.",
                 "parameters": [
                     {
-                        "description": "Digest to be signed",
-                        "name": "digest",
+                        "maxLength": 2,
+                        "minLength": 2,
+                        "type": "string",
+                        "example": "k1",
+                        "description": "Key Name",
+                        "name": "keyName",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Data to be signed",
+                        "name": "data",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -129,7 +149,7 @@
                 }
             }
         },
-        "/verify": {
+        "/api/verify/{keyName}": {
             "post": {
                 "description": "verify the data using provided signature and public key, using openssl or cloudhsm",
                 "consumes": [
@@ -151,6 +171,16 @@
                         "schema": {
                             "$ref": "#/definitions/controllers.VerifyRequest"
                         }
+                    },
+                    {
+                        "maxLength": 2,
+                        "minLength": 2,
+                        "type": "string",
+                        "example": "k1",
+                        "description": "Key Name",
+                        "name": "keyName",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {

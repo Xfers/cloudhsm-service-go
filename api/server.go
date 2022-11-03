@@ -16,8 +16,8 @@ const BASE_ROUTE = "api"
 // @version 1.0
 // @description Standalone cloudhsm-service
 
-// @host localhost:3000
-// @BasePath /
+// @host localhost:8000
+// @BasePath /api/
 // @schemes http
 func RunSignerServer(flags map[string]interface{}) {
 
@@ -149,5 +149,3 @@ func getKeys(flagKeys map[string]string, keyType string) (map[string]interface{}
 
 	return keys, nil
 }
-
-//TODO: Move these tests to test folder
