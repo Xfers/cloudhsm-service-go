@@ -1,10 +1,2 @@
 .vscode/
-testpublic.pem
-testpublic1.pem
-testpublic2.pem
-test/nohup.out
-temp_hello_digest.txt
-temp_hello.txt
-/testrsaprivkey.pem
-/testrsaprivkey1.pem
-/testrsaprivkey2.pem
+src/test/nohup.out

@@ -10,7 +10,10 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-const BASE_ROUTE = "api"
+const (
+	BASE_ROUTE = "api"
+	PORT       = "8000"
+)
 
 // @title CloudHSM service API
 // @version 1.0
@@ -31,7 +34,7 @@ func RunSignerServer(flags map[string]interface{}) {
 	setSignerRoutes(r)
 
 	// Run server
-	err = r.Run(":8000")
+	err = r.Run(":" + PORT)
 	if err != nil {
 		panic(err)
 	}
@@ -85,7 +88,7 @@ func RunVerifierServer(flags map[string]interface{}) {
 	setVerifierRoutes(r)
 
 	// Run server
-	err = r.Run(":8000")
+	err = r.Run(":" + PORT)
 	if err != nil {
 		panic(err)
 	}

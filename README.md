@@ -24,16 +24,16 @@ go build -o hsm-service main.go
 
 ```bash
 # run the server the signer services 
-./hsm-service serve --k1 testrsaprivkey.pem --k2 testrsaprivkey2.pem
+./hsm-service serve --k1 testrsaprivkey.pem --k2 testrsaprivkey1.pem
 
 # or like this (signer is the default mode, so that is why it was omitted above ):
 ./hsm-service serve --mode signer --k1 testrsaprivkey.pem --k2 testrsaprivkey2.pem
 
 # or shorter flag (-m):
-./hsm-service serve -m signer --k1 testrsaprivkey.pem --k2 testrsaprivkey2.pem
+./hsm-service serve -m signer --k1 testrsaprivkey.pem --k2 testrsaprivkey1.pem
 
 # run the server with the verifier services
-./hsm-service serve --mode verifier --k1 testpublic.pem --k2 testpublic2.pem
+./hsm-service serve --mode verifier --k1 testpublic.pem --k2 testpublic1.pem
 
  ```
 
@@ -78,4 +78,14 @@ swag init -g main.go --output docs
 
 ```url
  {HOST}:{PORT}/swagger/index.html
+```
+
+## Run server in container
+
+```bash
+# build the image
+docker image build -t hsm-service .
+
+# run the container
+docker container run -it --rm -p 8000:8000 hsm-service --k1 testrsaprivkey.pem --k2 testrsaprivkey1.pem
 ```
