@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"github.com/Xfers/cloudhsm-service-go/crypto"
+	"github.com/Xfers/go-openssl"
 	"github.com/gin-gonic/gin"
-	"github.com/libp2p/go-openssl"
 )
 
 type DigestRequest struct {

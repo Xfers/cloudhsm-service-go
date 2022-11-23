@@ -1,7 +1,7 @@
 package crypto
 
 import (
-	openssl "github.com/libp2p/go-openssl"
+	"github.com/Xfers/go-openssl"
 )
 
 type PureSigner interface {

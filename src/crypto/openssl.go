@@ -3,7 +3,7 @@ package crypto
 import (
 	"encoding/base64"
 
-	openssl "github.com/libp2p/go-openssl"
+	"github.com/Xfers/go-openssl"
 )
 
 type opensslSigner struct {
@@ -13,7 +13,7 @@ type opensslSigner struct {
 
 func (s *opensslSigner) Sign() (string, error) {
 
-	// Get Digest
+	// // Get Digest
 	digest, err := Digest(s.data)
 	if err != nil {
 		return "", err
@@ -51,7 +51,7 @@ func sign(digest string, priv *openssl.PrivateKey) ([]byte, error) {
 	}
 
 	// Sign
-	sig, err := (*priv).SignPKCS1v15(openssl.SHA256_Method, digestBa)
+	sig, err := (*priv).Sign(openssl.SHA256_Method, digestBa)
 	if err != nil {
 		return nil, err
 	}
