@@ -54,6 +54,10 @@ var signCmd = &cobra.Command{
 			fmt.Println(err)
 			return
 		}
+
+		// Set Engine
+		crypto.Init()
+
 		key, err := openssl.LoadPrivateKeyFromPEM(keyPem)
 		if err != nil {
 			fmt.Println(err)

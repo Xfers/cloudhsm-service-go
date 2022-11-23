@@ -17,7 +17,7 @@ openssl rsa -in testrsaprivkey2.pem -outform PEM -pubout -out testpublic2.pem
 
 ```bash
 # build the executable
-go build -o hsm-service main.go 
+go build -o hsm-service . 
 ```
 
 ## How to run the server
@@ -58,10 +58,10 @@ echo -n "hello" | ./hsm-service sign -k $YOUR_KEY_FILE
 # run the pure-sign command
 
 # Sign from string(digested "hello"):
-./hsm-service sign -k $YOUR_KEY_FILE -s "LPJNul+wow4m6DsqxbninhsWHlwfp0JecwQzYpOLmCQ="
+./hsm-service pure-sign -k $YOUR_KEY_FILE -s "LPJNul+wow4m6DsqxbninhsWHlwfp0JecwQzYpOLmCQ="
 
 # Sign from file (that holds the digest):
-./hsm-service sign -k $YOUR_KEY_FILE -f $YOUR_DIGEST_FILE
+./hsm-service pure-sign -k $YOUR_KEY_FILE -f $YOUR_DIGEST_FILE
 
 # Sign from stdin:
 echo -n "hello" | openssl dgst -sha256 -binary - | base64 -w 0 | ./hsm-service pure-sign -k $YOUR_KEY_FILE
@@ -88,4 +88,7 @@ docker image build -t hsm-service .
 
 # run the container
 docker container run -it --rm -p 8000:8000 hsm-service --k1 testrsaprivkey.pem --k2 testrsaprivkey1.pem
+
+# bypass the entrypoint and shell into the container directly so you can run commands
+docker container run -it --rm --entrypoint=/bin/bash ddjura/hsm-service 
 ```

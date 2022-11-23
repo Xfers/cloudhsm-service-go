@@ -10,7 +10,6 @@ type Signer interface {
 
 func NewSigner(priv *openssl.PrivateKey, data string) Signer {
 
-	Init()
 	return &opensslSigner{priv, data}
 
 }
