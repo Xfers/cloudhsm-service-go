@@ -9,7 +9,7 @@ import (
 	"io/ioutil"
 
 	"github.com/Xfers/cloudhsm-service-go/crypto"
-	"github.com/libp2p/go-openssl"
+	"github.com/Xfers/go-openssl"
 	"github.com/spf13/cobra"
 )
 

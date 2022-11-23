@@ -1,6 +1,8 @@
 package crypto
 
-import "io/ioutil"
+import (
+	"io/ioutil"
+)
 
 func GetKeyPem(KeyPath *string) ([]byte, error) {
 	// Read key from pem file

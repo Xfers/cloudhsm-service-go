@@ -4,8 +4,8 @@ import (
 	"github.com/Xfers/cloudhsm-service-go/api/controllers"
 	"github.com/Xfers/cloudhsm-service-go/crypto"
 	_ "github.com/Xfers/cloudhsm-service-go/docs"
+	"github.com/Xfers/go-openssl"
 	"github.com/gin-gonic/gin"
-	"github.com/libp2p/go-openssl"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
