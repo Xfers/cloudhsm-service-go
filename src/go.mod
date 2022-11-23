@@ -3,7 +3,7 @@ module github.com/Xfers/cloudhsm-service-go
 go 1.18
 
 require (
-	github.com/Xfers/go-openssl v0.0.3
+	github.com/Xfers/go-openssl v0.0.7
 	github.com/gin-gonic/gin v1.8.1
 	github.com/spf13/cobra v1.6.1
 	github.com/stretchr/testify v1.8.1

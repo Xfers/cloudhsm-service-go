@@ -121,7 +121,7 @@ func setVerifierRoutes(r *gin.Engine) {
 func setBaseRoutes(r *gin.Engine) {
 
 	// Health check endpoint
-	endPoint := BASE_ROUTE + "/health"
+	endPoint := "/liveness"
 	r.GET(endPoint, func(c *gin.Context) {
 		controllers.HealthController(c)
 	})
@@ -138,6 +138,9 @@ func getKeys(flagKeys map[string]string, keyType string) (map[string]interface{}
 		if err != nil {
 			return nil, err
 		}
+
+		// Set Engine
+		crypto.Init()
 
 		if keyType == "private" {
 			keys[keyFlagName], err = openssl.LoadPrivateKeyFromPEM(keyPem)

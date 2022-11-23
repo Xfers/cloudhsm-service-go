@@ -9,7 +9,5 @@ type PureSigner interface {
 }
 
 func NewPureSigner(priv *openssl.PrivateKey, digest string) Signer {
-
-	Init()
 	return &opensslPureSigner{priv, digest}
 }

@@ -13,13 +13,8 @@ type opensslSigner struct {
 
 func (s *opensslSigner) Sign() (string, error) {
 
-	// // Get Digest
-	digest, err := Digest(s.data)
-	if err != nil {
-		return "", err
-	}
-
-	sig, err := sign(digest, s.priv)
+	// Sign
+	sig, err := (*s.priv).Sign(openssl.SHA256_Method, []byte(s.data))
 	if err != nil {
 		return "", err
 	}
@@ -35,29 +30,14 @@ type opensslPureSigner struct {
 
 func (s *opensslPureSigner) Sign() (string, error) {
 
-	sig, err := sign(s.digest, s.priv)
+	sig, err := (*s.priv).PureSign(openssl.SHA256_Method, []byte(s.digest))
+
 	if err != nil {
 		return "", err
 	}
 
 	//return signature base64 encoded
 	return base64.StdEncoding.EncodeToString(sig), nil
-}
-
-func sign(digest string, priv *openssl.PrivateKey) ([]byte, error) {
-	digestBa, err := base64.StdEncoding.DecodeString(digest)
-	if err != nil {
-		return nil, err
-	}
-
-	// Sign
-	sig, err := (*priv).Sign(openssl.SHA256_Method, digestBa)
-	if err != nil {
-		return nil, err
-	}
-
-	//return signature
-	return sig, nil
 }
 
 type opensslVerifier struct {

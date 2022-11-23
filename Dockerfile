@@ -11,6 +11,9 @@ RUN cd /tmp \
 WORKDIR /go/src/hsm-service
 COPY src/ .
 
+RUN go install github.com/swaggo/swag/cmd/swag@latest && swag init -g main.go --output docs
+
+
 RUN go mod download
 RUN go mod verify
 
