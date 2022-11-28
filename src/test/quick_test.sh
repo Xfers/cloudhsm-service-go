@@ -10,16 +10,18 @@ fi
 
 go build -o hsm-service .
 
+KEY_PATH=test/testrsaprivkey.pem
+
 
 echo "GROUND TRUTH SIGN:"
-echo -n "hello" | openssl dgst -sign test/testrsaprivkey.pem -sha256 | base64 -w 0
+echo -n "hello" | openssl dgst -sign ${KEY_PATH} -sha256 | base64 -w 0
 echo "\n"
 
 
 echo "SERVICE SIGN:"
-./hsm-service sign -k test/testrsaprivkey.pem -s "hello" 
+./hsm-service sign -k ${KEY_PATH} -s "hello" 
 echo "\n"
 
 echo "SERVICE PURE SIGN:"
-echo -n "hello" | openssl dgst -sha256 -binary | ./hsm-service pure-sign -k test/testrsaprivkey.pem
+echo -n "hello" | openssl dgst -sha256 -binary | ./hsm-service pure-sign -k ${KEY_PATH}
 echo "\n"
