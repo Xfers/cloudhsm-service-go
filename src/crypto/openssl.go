@@ -30,7 +30,13 @@ type opensslPureSigner struct {
 
 func (s *opensslPureSigner) Sign() (string, error) {
 
-	sig, err := (*s.priv).PureSign(openssl.SHA256_Method, []byte(s.digest))
+	// determine if the digest is base64 encoded and should be decoded (coming from web api in our case)
+	digestBa, err := base64.StdEncoding.DecodeString(s.digest)
+	if err != nil {
+		digestBa = []byte(s.digest)
+	}
+
+	sig, err := (*s.priv).PureSign(openssl.SHA256_Method, digestBa)
 
 	if err != nil {
 		return "", err

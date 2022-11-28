@@ -11,7 +11,7 @@ echo "Server is running with pid ${PID}"
 # wait for server to come up, loop till health check is 200
 while true; do
     sleep 1
-    STATUS=`curl -s -o /dev/null -w "%{http_code}" http://localhost:8000/api/health`
+    STATUS=`curl -s -o /dev/null -w "%{http_code}" http://localhost:8000/liveness`
     if [ "${STATUS}" == "200" ]; then
         break
     fi

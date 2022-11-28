@@ -146,8 +146,10 @@ func PureSignController(c *gin.Context) {
 	}
 	priv := baseController.getKey(keyName).(openssl.PrivateKey)
 
+	digest := pureSignRequest.Digest
+
 	// Pure Sign
-	signer := crypto.NewPureSigner(&priv, pureSignRequest.Digest)
+	signer := crypto.NewPureSigner(&priv, digest)
 	signature, err := signer.Sign()
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
