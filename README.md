@@ -35,6 +35,9 @@ go build -o hsm-service .
 # run the server with the verifier services
 ./hsm-service serve --mode verifier --k1 testpublic.pem --k2 testpublic1.pem
 
+# if you want to run the server in the background and log to dev/null add this
+> /dev/null 2>&1 &
+
  ```
 
  ## How to run the commands

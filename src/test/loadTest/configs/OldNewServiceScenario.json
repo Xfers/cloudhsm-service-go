@@ -1,0 +1,48 @@
+[
+    {
+        "name": "Sign API",
+        "steps": [
+            {
+                "name": "New CloudHSM service in Go",
+                "concurrent_users_max": 6,
+                "concurrent_users_min": 2,
+                "concurrent_users_delimiter": 2,
+                "endpoint": "http://localhost:8000/api/sign/k1",
+                "request_body": {
+                    "data": "hello"
+                }
+            },
+            {
+                "name": "Existing CloudHSM service in C++",
+                "concurrent_users_max": 6,
+                "concurrent_users_min": 2,
+                "concurrent_users_delimiter": 2,
+                "endpoint": "http://localhost:8000/api/sign/k1",
+                "request_body": "hello"
+            }
+        ]
+    },
+    {
+        "name": "Pure Sign API",
+        "steps": [
+            {
+                "name": "New CloudHSM service in Go",
+                "concurrent_users_max": 6,
+                "concurrent_users_min": 2,
+                "concurrent_users_delimiter": 2,
+                "endpoint": "http://localhost:8000/api/pure-sign/k1",
+                "request_body": {
+                    "digest": "LPJNul+wow4m6DsqxbninhsWHlwfp0JecwQzYpOLmCQ="
+                }
+            },
+            {
+                "name": "Existing CloudHSM service in C++",
+                "concurrent_users_max": 6,
+                "concurrent_users_min": 2,
+                "concurrent_users_delimiter": 2,
+                "endpoint": "http://localhost:8000/api/pure-sign/k1",
+                "request_body": "LPJNul+wow4m6DsqxbninhsWHlwfp0JecwQzYpOLmCQ="
+            }
+        ]
+    }
+]
