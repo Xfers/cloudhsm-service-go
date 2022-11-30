@@ -17,16 +17,21 @@ func PlotterLoadTest(allResultsSlice []allResults) error {
 		p.Title.Text = allResults.Name
 		p.X.Label.Text = "Number of concurrent users"
 		p.Y.Label.Text = "Successful run percentage"
-
+		data := []interface{}{}
 		for _, result := range allResults.Results {
-			// create plotter
-			err := plotutil.AddLinePoints(p,
-				result.Name, assignPoints(result.Results))
-			if err != nil {
-				return err
-			}
+			// data := []interface{}{result.Name, assignPoints(result.Results)}
+			data = append(data, result.Name, assignPoints(result.Results))
+
 		}
 
+		err := plotutil.AddLinePoints(
+			p,
+			data...,
+		)
+
+		if err != nil {
+			return err
+		}
 		// Save the plot to a PNG file.
 		if err := p.Save(4*vg.Inch, 4*vg.Inch, allResults.Name+".png"); err != nil {
 			panic(err)
