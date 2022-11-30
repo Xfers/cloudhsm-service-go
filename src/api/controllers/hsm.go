@@ -47,12 +47,8 @@ func DigestController(c *gin.Context) {
 	c.JSON(http.StatusOK, digestResponse)
 }
 
-type SignRequest struct {
-	Data string `json:"data"`
-}
-
 type SignResponse struct {
-	Signature string `json:"signature"`
+	Result string `json:"result"`
 }
 
 // Sign godoc
@@ -62,13 +58,12 @@ type SignResponse struct {
 // @Accept json
 // @Produce json
 // @Param keyName path string true "Key Name" example(k1) minLength(2) maxLength(2) pattern([a-z]+) style(simple) allowEmptyValue(false)
-// @Param data body SignRequest true "Data to be signed"
 // @Success 200 {object} SignResponse
 // @Router /api/sign/{keyName} [post]
 func SignController(c *gin.Context) {
-	// Get data from request body json
-	var signRequest SignRequest
-	if err := c.ShouldBindJSON(&signRequest); err != nil {
+
+	body, err := c.GetRawData()
+	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -90,7 +85,7 @@ func SignController(c *gin.Context) {
 	priv := baseController.getKey(keyName).(openssl.PrivateKey)
 
 	// Sign
-	signer := crypto.NewSigner(&priv, signRequest.Data)
+	signer := crypto.NewSigner(&priv, string(body))
 	signature, err := signer.Sign()
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -99,17 +94,13 @@ func SignController(c *gin.Context) {
 
 	// Return signature
 	signResponse := SignResponse{
-		Signature: signature,
+		Result: signature,
 	}
 	c.JSON(http.StatusOK, signResponse)
 }
 
-type PureSignRequest struct {
-	Digest string `json:"digest"`
-}
-
 type PureSignResponse struct {
-	Signature string `json:"signature"`
+	Result string `json:"result"`
 }
 
 // PureSign godoc
@@ -119,13 +110,12 @@ type PureSignResponse struct {
 // @Accept json
 // @Produce json
 // @Param keyName path string true "Key Name" example(k1) minLength(2) maxLength(2) pattern([a-z]+) style(simple) allowEmptyValue(false)
-// @Param data body PureSignRequest true "Data to be signed"
 // @Success 200 {object} PureSignResponse
 // @Router /api/pure-sign/{keyName} [post]
 func PureSignController(c *gin.Context) {
-	// Get data from request body json
-	var pureSignRequest PureSignRequest
-	if err := c.ShouldBindJSON(&pureSignRequest); err != nil {
+
+	body, err := c.GetRawData()
+	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -146,7 +136,7 @@ func PureSignController(c *gin.Context) {
 	}
 	priv := baseController.getKey(keyName).(openssl.PrivateKey)
 
-	digest := pureSignRequest.Digest
+	digest := string(body)
 
 	// Pure Sign
 	signer := crypto.NewPureSigner(&priv, digest)
@@ -158,7 +148,7 @@ func PureSignController(c *gin.Context) {
 
 	// Return signature
 	pureSignResponse := PureSignResponse{
-		Signature: signature,
+		Result: signature,
 	}
 	c.JSON(http.StatusOK, pureSignResponse)
 }
