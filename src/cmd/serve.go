@@ -1,6 +1,5 @@
 /*
 Copyright © 2022 NAME HERE <EMAIL ADDRESS>
-
 */
 package cmd
 
@@ -73,7 +72,6 @@ var serveCmd = &cobra.Command{
 
 		// Run Signer server
 		if mode == defaultMode {
-
 			api.RunSignerServer(map[string]interface{}{
 				"keys": keys,
 			})

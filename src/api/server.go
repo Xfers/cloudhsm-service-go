@@ -1,6 +1,9 @@
 package api
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
+
 	"github.com/Xfers/cloudhsm-service-go/api/controllers"
 	"github.com/Xfers/cloudhsm-service-go/crypto"
 	_ "github.com/Xfers/cloudhsm-service-go/docs"
@@ -23,7 +26,6 @@ const (
 // @BasePath /api/
 // @schemes http
 func RunSignerServer(flags map[string]interface{}) {
-
 	err := prepareSignerServer(flags)
 	if err != nil {
 		panic(err)
@@ -57,7 +59,6 @@ func setSignerRoutes(r *gin.Engine) {
 
 	setBaseRoutes(r)
 
-	//TODO: Set time limit in context
 	// Digest endpoint with BASE_ROUTE
 	endPoint := BASE_ROUTE + "/digest"
 	r.POST(endPoint, func(c *gin.Context) {
@@ -133,25 +134,42 @@ func setBaseRoutes(r *gin.Engine) {
 
 func getKeys(flagKeys map[string]string, keyType string) (map[string]interface{}, error) {
 	keys := map[string]interface{}{}
+
+	// Set Engine
+	crypto.Init()
+
 	for keyFlagName, keyPemPath := range flagKeys {
 		keyPem, err := crypto.GetKeyPem(&keyPemPath)
 		if err != nil {
 			return nil, err
 		}
 
-		// Set Engine
-		crypto.Init()
+		var key interface{}
 
 		if keyType == "private" {
-			keys[keyFlagName], err = openssl.LoadPrivateKeyFromPEM(keyPem)
+			key, err = openssl.LoadPrivateKeyFromPEM(keyPem)
 		} else {
-			keys[keyFlagName], err = openssl.LoadPublicKeyFromPEM(keyPem)
+			key, err = openssl.LoadPublicKeyFromPEM(keyPem)
 		}
 
 		if err != nil {
 			return nil, err
 		}
+
+		// Set regular field, e.g. k1, k2
+		keys[keyFlagName] = key
+
+		// Set hash field
+		setHashField(&keys, keyPem, key)
+
 	}
 
 	return keys, nil
+}
+
+func setHashField(keys *map[string]interface{}, keyPem []byte, key interface{}) {
+	h := sha256.New()
+	h.Write(keyPem)
+	sha := hex.EncodeToString(h.Sum(nil))
+	(*keys)[sha] = key
 }
