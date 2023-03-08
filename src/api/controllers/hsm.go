@@ -82,7 +82,15 @@ func SignController(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Base Controller not set"})
 		return
 	}
-	priv := baseController.getKey(keyName).(openssl.PrivateKey)
+
+	// Get private key check if exists first return 404 don't panic
+	privKey := baseController.getKey(keyName)
+	if privKey == nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Key not found"})
+		return
+	}
+
+	priv := privKey.(openssl.PrivateKey)
 
 	// Sign
 	signer := crypto.NewSigner(&priv, string(body))
@@ -134,7 +142,15 @@ func PureSignController(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Base Controller not set"})
 		return
 	}
-	priv := baseController.getKey(keyName).(openssl.PrivateKey)
+
+	// Get private key check if exists first return 404 don't panic
+	privKey := baseController.getKey(keyName)
+	if privKey == nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Key not found"})
+		return
+	}
+
+	priv := privKey.(openssl.PrivateKey)
 
 	digest := string(body)
 
